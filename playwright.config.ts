@@ -9,12 +9,13 @@ dotenv.config({ path: '.env' });
 export const BASE_URL = process.env.URL || 'https://q-centralpark.parkplacetechnologies.net';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: '.',
+  outputDir: './.playwright/reports',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 3 : 0,
-  reporter: [['html', { open: 'never' }], ['dot']],
+  workers: process.env.CI ? 3 : 1,
+  reporter: [['html', { outputFolder: './.playwright/reports', open: 'never' }], ['list']],
   timeout: TEST_TIMEOUT,
   expect: {
     timeout: EXPECT_TIMEOUT,

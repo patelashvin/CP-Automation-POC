@@ -72,6 +72,7 @@ export default [
       parserOptions: {
         project: path.join(__dirname, './tsconfig.json'),
         tsconfigRootDir: __dirname,
+        
       },
     },
 
@@ -79,6 +80,15 @@ export default [
       'import/resolver': {
         typescript: {
           project: path.join(__dirname, './tsconfig.json'),
+          paths: {
+            "@pages/*": ["src/pages/*"],
+            "@testdata/*": ["src/tests/data/*"],
+            "@fixture": ["src/tests/fixture"],
+            "@utils/*": ["./src/utils/*"],
+            "@playwright-config": ["playwright.config"],
+            "@proxymise-page": ["src/utils/proxymise.utils.ts"],
+          },
+          alwaysTryTypes: true,
         },
       },
     },

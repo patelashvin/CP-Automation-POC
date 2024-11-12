@@ -1,5 +1,8 @@
 import { devices } from '@playwright/test';
+import { fileURLToPath } from 'url';
 import path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const STORAGE_STATE_PATH = path.join(__dirname, 'playwright/.auth/user.json');
 

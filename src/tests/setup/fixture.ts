@@ -24,7 +24,7 @@ export const test = baseTest.extend<TestFixture, WorkerFixture>({
       await use('testFixure');
       // console.log('AFTER EACH HOOK TEST FIXTURE');
     },
-    { scope: 'test', auto: true },
+    { scope: 'test', auto: false },
   ],
 });
 

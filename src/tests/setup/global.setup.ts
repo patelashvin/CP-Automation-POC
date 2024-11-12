@@ -9,7 +9,9 @@ import { test as setup } from '@playwright/test';
 import { BASE_URL } from '@playwright-config';
 import path from 'path';
 
-export const STORAGE_STATE_PATH = path.join(__dirname, 'playwright/.auth/user.json');
+const ROOT_DIR = process.cwd();
+
+export const STORAGE_STATE_PATH = path.join(ROOT_DIR, '.playwright/.auth/user.json');
 
 setup('authenticate', async ({ page }) => {
   await page.goto(BASE_URL);

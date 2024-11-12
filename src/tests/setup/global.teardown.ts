@@ -8,7 +8,7 @@
 import { Browser, test as teardown } from '@playwright/test';
 
 teardown('Teardown', async ({}) => {
-  //   console.log('Global teardown: Cleaning up resources after all tests');
+  // console.log('Global teardown: Cleaning up resources after all tests');
 
   // Assuming you launched a browser in globalSetup or elsewhere
   const browser: Browser = global.__BROWSER__; // If you're sharing browser instance across tests
