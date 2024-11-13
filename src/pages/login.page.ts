@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { createProxymisedPage } from '@utils/proxymise.utils';
 import { HomePage } from '@pages/home.page';
-import { BasePage } from '@pages/base.page';
+import { BasePage } from '@pages/base/base.page';
 
 class LoginPO extends BasePage {
   private readonly $loginButton: Locator;

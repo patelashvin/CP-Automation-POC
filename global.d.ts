@@ -1,7 +1,7 @@
 // global.d.ts
 
 import type { Locator, Page } from '@playwright/test';
-import type { BasePage } from 'src/pages/base.page';
+import type { BasePage } from '@pages/base/base.page';
 
 declare module 'underscore';
 

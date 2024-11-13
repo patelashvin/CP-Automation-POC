@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { BasePage } from '@pages/base.page';
+import { BasePage } from '@pages/base/base.page';
 import { createProxymisedPage } from '@proxymise-page';
 
 class GooglePO extends BasePage {
