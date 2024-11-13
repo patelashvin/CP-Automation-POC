@@ -4,7 +4,7 @@ export interface User {
 }
 
 export const standardUser: User = {
-  username: 'standard_user',
+  username: process.env.DEV,
   password: 'secret_sauce',
 };
 

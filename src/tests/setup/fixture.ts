@@ -1,11 +1,12 @@
 import { test as baseTest } from '@playwright/test';
+import { STORAGE_STATE_LOGIN } from 'project.config';
 
 type WorkerFixture = {
   workerFixture: string;
 };
 
 type TestFixture = {
-  testFixure: string;
+  testFixure: { [k: string]: string };
 };
 
 export const test = baseTest.extend<TestFixture, WorkerFixture>({
@@ -21,10 +22,10 @@ export const test = baseTest.extend<TestFixture, WorkerFixture>({
   testFixure: [
     async ({}, use) => {
       // console.log('BEFORE EACH HOOK TEST FROM FIXTURE');
-      await use('testFixure');
+      await use({ storageState: STORAGE_STATE_LOGIN });
       // console.log('AFTER EACH HOOK TEST FIXTURE');
     },
-    { scope: 'test', auto: false },
+    { scope: 'test', auto: true },
   ],
 });
 

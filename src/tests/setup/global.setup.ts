@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/await-thenable */
 /**
  * This module is responsible for setting up the global state before all tests start.
  * It includes a default export function that runs before all tests, setting up any necessary global context.
@@ -6,7 +7,8 @@
  */
 
 import { test as setup } from '@playwright/test';
-import { BASE_URL } from '@playwright-config';
+import { LoginPage } from '@pages/login.page';
+import { getEnvironment } from '@playwright-config';
 import path from 'path';
 
 const ROOT_DIR = process.cwd();
@@ -14,7 +16,8 @@ const ROOT_DIR = process.cwd();
 export const STORAGE_STATE_PATH = path.join(ROOT_DIR, '.playwright/.auth/user.json');
 
 setup('authenticate', async ({ page }) => {
-  await page.goto(BASE_URL);
+  const { baseUrl, username, password } = getEnvironment();
+  await LoginPage.open(page, baseUrl).ClickLoginBtn().EnterUserName(username).EnterPassword(password);
   await page.context().storageState({ path: STORAGE_STATE_PATH });
   await page.close();
 });

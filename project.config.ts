@@ -1,10 +1,6 @@
 import { devices } from '@playwright/test';
-import { fileURLToPath } from 'url';
-import path from 'path';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-export const STORAGE_STATE_PATH = path.join(__dirname, 'playwright/.auth/user.json');
+export const STORAGE_STATE_LOGIN = '.playwright/.auth/user.json';
 
 export const project = [
   {
@@ -32,7 +28,7 @@ export const project = [
     use: {
       viewport: null,
       // Set the storage state here if you have only one user to login.
-      // storageState: STORAGE_STATE_LOGIN,
+      storageState: STORAGE_STATE_LOGIN,
       launchOptions: {
         args: ['--disable-web-security', '--start-maximized'],
         /* --auto-open-devtools-for-tabs option is used to open a test with Network tab for debugging. It can help in analyzing network requests and responses.*/

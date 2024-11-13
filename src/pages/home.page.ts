@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
+import { createProxymisedPage } from '@utils/proxymise.utils';
 import { BasePage } from './base.page';
-import { createProxymisedPage } from '@proxymise-page';
 
 class HomePO extends BasePage {
   constructor(page: Page) {

@@ -15,7 +15,9 @@ declare global {
   };
 
   type ProxymisedPage<T, S = typeof BasePage> = {
-    [K in keyof S]: S[K] extends (...args: infer A) => Promise<T> ? (...args: A) => ProxymisedPage<T, S> : S[K];
+    [K in keyof S]: S[K] extends (page: Page, ...args: infer P) => Promise<T>
+      ? (page: Page, ...args: P) => ProxymisedPage<T, S>
+      : S[K];
   } & {
     [K in keyof T]: T[K] extends Locator
       ? PromisifiedLocator
@@ -25,12 +27,5 @@ declare global {
   } & {
     new (page: Page): T;
   };
-
-  type Constructor<T> = new (...args: any[]) => T;
-
-  function createProxymisedPage<T extends BasePage, S extends Constructor<T>>(
-    PageClass: S & { open?: (page: Page) => Promise<T> },
-  ): ProxymisedPage<T, S>;
 }
-
 export {};

@@ -8,6 +8,41 @@ dotenv.config({ path: '.env' });
 
 export const BASE_URL = process.env.URL || 'https://q-centralpark.parkplacetechnologies.net';
 
+interface Credentials {
+  baseUrl: string | undefined;
+  username: string | undefined;
+  password: string | undefined;
+}
+
+type Env = 'dev' | 'qa' | 'prod';
+
+type EnvConfig = {
+  [key in Env]: Credentials;
+};
+
+export const envConfig: EnvConfig = {
+  dev: {
+    baseUrl: process.env.DEV_CP_URL,
+    username: process.env.DEV_CP_GA_USERNAME,
+    password: process.env.DEV_CP_GA_PASSWORD,
+  },
+  qa: {
+    baseUrl: process.env.QA_CP_URL,
+    username: process.env.QA_CP_GA_USERNAME,
+    password: process.env.QA_CP_GA_PASSWORD,
+  },
+  prod: {
+    baseUrl: process.env.PROD_CP_URL,
+    username: process.env.PROD_CP_GA_USERNAME,
+    password: process.env.PROD_CP_GA_PASSWORD,
+  },
+};
+
+export function getEnvironment(): Credentials {
+  const cpEnv: Env = ['dev', 'qa', 'prod'].includes(process.env.TEST_ENV as Env) ? (process.env.TEST_ENV as Env) : 'qa';
+  return envConfig[cpEnv];
+}
+
 export default defineConfig({
   testDir: '.',
   outputDir: './.playwright/reports',
