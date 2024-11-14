@@ -1,9 +1,8 @@
 import { Locator, Page } from '@playwright/test';
-import { UserManagerPage } from '@pages/admin-hub/user-manager.page';
 import { createProxymisedPage } from '@utils/proxymise.utils';
+import { BasePage } from './base/base.page';
 
-export class UserDetailPO {
-  protected page: Page;
+export class UserDetailPO extends BasePage {
   readonly $deleteBtn: Locator;
   readonly $userFirstName: Locator;
   readonly $edit: Locator;
@@ -20,7 +19,7 @@ export class UserDetailPO {
   readonly $detailsTab: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
     this.$deleteBtn = this.page.getByRole('button', { name: 'Delete' });
     this.$userFirstName = this.page.locator('input[type="email"]');
     this.$edit = this.page.getByText('Edit ');
@@ -37,16 +36,16 @@ export class UserDetailPO {
     this.$detailsTab = this.page.locator('a', { hasText: 'Details' });
   }
 
-  public static async open(page: Page, customerId: string): Promise<UserDetailPO> {
+  public static async open(page: Page, customerId: string): Promise<IPageObject> {
     await page.goto(`/admin-hub/user-manager/details/${customerId}`);
-    return new UserDetailPO(page);
+    return this as unknown as IPageObject;
   }
 
-  public DeleteUser = async (): Promise<UserManagerPage> => {
+  public DeleteUser = async (): Promise<IPageObject> => {
     await this.$deleteBtn.waitFor({ state: 'visible' });
     await this.$deleteBtn.click();
     await this.page.getByRole('button', { name: "Yes, I'm sure" }).click();
-    return new UserManagerPage(this.page);
+    return this as unknown as IPageObject;
   };
 }
 

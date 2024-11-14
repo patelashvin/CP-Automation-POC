@@ -6,14 +6,15 @@ let firstName: string;
 let lastName: string;
 let email: string;
 
-test.beforeEach(({}) => {
+test.beforeEach(() => {
   const randStr: string = _.random(100, 9999).toString();
   firstName = 'AHFIRST' + randStr;
   lastName = 'AHLAST' + randStr;
   email = 'AHEmail' + randStr + '@gmail.com';
 });
 
-test('Create User and Delete User', ({ page }) => {
-  HomePage.open(page);
+test('Create User and Delete User', async ({ page }) => {
+  // eslint-disable-next-line @typescript-eslint/await-thenable
+  await HomePage.open(page).ClickAdminHubBtn().SwitchCustomer(' Park Place Technologies LLC ');
   expect(true).toBeTruthy();
 });

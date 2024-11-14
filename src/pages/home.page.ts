@@ -7,10 +7,10 @@ class HomePO extends BasePage {
     super(page);
   }
 
-  public static async open(page: Page): Promise<HomePO> {
+  public static async open(page: Page): Promise<IPageObject> {
     await page.goto('/dashboard');
     await page.waitForLoadState('domcontentloaded');
-    return new HomePO(page);
+    return new HomePO(page) as unknown as IPageObject;
   }
 }
 

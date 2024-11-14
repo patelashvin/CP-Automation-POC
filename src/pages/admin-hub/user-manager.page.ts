@@ -11,12 +11,12 @@ export class UserManagerPO extends BasePage {
     this.$createUserBtn = this.page.locator('li').filter({ hasText: 'Create User' });
   }
 
-  public async open(page: Page): Promise<UserManagerPO> {
+  public async open(page: Page): Promise<IPageObject> {
     await page.goto('/admin-hub/user-manager');
-    return new UserManagerPO(page);
+    return new UserManagerPO(page) as unknown as IPageObject;
   }
 
-  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<UserDetailPage> => {
+  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<IPageObject> => {
     await this.$createUserBtn.waitFor({ state: 'attached' });
     await this.$createUserBtn.click();
     await this.page.getByPlaceholder('Search for Customer').click();
@@ -31,10 +31,10 @@ export class UserManagerPO extends BasePage {
     await this.page.getByPlaceholder('Phone').fill('1112223333');
     await this.page.getByRole('button', { name: 'Save' }).click();
     await this.page.getByRole('button', { name: 'Yes, Create' }).click();
-    return new UserDetailPage(this.page);
+    return this as unknown as IPageObject;
   };
 
-  public UserSearch = async (userEmail: string): Promise<UserDetailPage> => {
+  public UserSearch = async (userEmail: string): Promise<IPageObject> => {
     await this.page.getByRole('button').nth(2).click();
     const [response]: any = await Promise.all([
       this.page.waitForResponse(resp => resp.url().includes('/get-search-all-users?'), { timeout: 30000 }),
@@ -47,7 +47,7 @@ export class UserManagerPO extends BasePage {
 
     if (email !== userEmail) throw new Error(`User email: ${userEmail} do not match response email: ${email}`);
     await this.page.locator('cdk-virtual-scroll-viewport [tabindex="0"]').click();
-    return new UserDetailPage(this.page);
+    return this as unknown as IPageObject;
   };
 }
 
