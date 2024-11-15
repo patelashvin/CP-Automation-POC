@@ -1,7 +1,14 @@
-import { type Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { HeaderComponent } from './header.comp';
 import { NavBarComponent } from './nav-bar.comp';
-import { UserManagerPage } from '@pages/admin-hub/user-manager.page';
+import { IUserManagerPage } from '@pages/admin-hub/user-manager.page';
+
+declare global {
+  interface IPageObject {
+    ClickAdminHubBtn(): Promise<IUserManagerPage>;
+    SwitchCustomer(customer: string): Promise<IUserManagerPage>;
+  }
+}
 
 export abstract class BasePage implements IPageObject {
   protected readonly page: Page;
@@ -14,34 +21,26 @@ export abstract class BasePage implements IPageObject {
     this._navBar = new NavBarComponent(page);
   }
 
-  get header(): HeaderComponent {
-    return this._header;
+  public async ClickAdminHubBtn(): Promise<IUserManagerPage> {
+    await this._navBar.$adminHubBtn.dblclick({ delay: 600 });
+    await this.page.waitForResponse(
+      resp => resp.url().includes('/administration-user/get-search-all-users?') && resp.status() === 200,
+      { timeout: 30000 },
+    );
+
+    const { UserManagerPO } = await import('@pages/admin-hub/user-manager.page');
+    return new UserManagerPO(this.page);
   }
 
-  get navBar(): NavBarComponent {
-    return this._navBar;
-  }
-
-  public async ClickAdminHubBtn(): Promise<IPageObject> {
-    await this.navBar.$adminHubBtn.dblclick({ delay: 600 }).then(async () => {
-      await this.page.waitForResponse(
-        resp => resp.url().includes('/administration-user/get-search-all-users?') && resp.status() === 200,
-        { timeout: 30000 },
-      );
-    });
-    return this as unknown as IPageObject;
-  }
-
-  public async SwitchCustomer(customer: string): Promise<IPageObject> {
-    await this.header.$settingsBtn.click();
-    await this.header.$switchCustomerBtn.click();
+  public async SwitchCustomer(customer: string): Promise<IUserManagerPage> {
+    await this._header.$settingsBtn.click();
+    await this._header.$switchCustomerBtn.click();
     await this.page.getByPlaceholder('Select Customer').click();
     await this.page.getByPlaceholder('Customer Name').pressSequentially(customer);
     await this.page.getByLabel('Customer', { exact: true }).getByText(customer, { exact: true }).click();
-    // await this.page.pause();
-    // await this.page.getByText(customer).click();
-    await this.header.$changeCustomerBtn.click();
-    await this.navBar.$homeBtn.click();
-    return this as unknown as IPageObject;
+    await this._header.$changeCustomerBtn.click();
+    await this._navBar.$homeBtn.click();
+    const { UserManagerPO } = await import('@pages/admin-hub/user-manager.page');
+    return new UserManagerPO(this.page);
   }
 }

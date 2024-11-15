@@ -14,7 +14,6 @@ test.beforeEach(() => {
 });
 
 test('Create User and Delete User', async ({ page }) => {
-  // eslint-disable-next-line @typescript-eslint/await-thenable
   await HomePage.open(page).ClickAdminHubBtn().SwitchCustomer(' Park Place Technologies LLC ');
   expect(true).toBeTruthy();
 });

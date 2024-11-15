@@ -1,9 +1,19 @@
 import { Locator, Page } from '@playwright/test';
-import { UserDetailPage } from '@pages/user-detail.page';
 import { BasePage } from '@pages/base/base.page';
 import { createProxymisedPage } from '@utils/proxymise.utils';
 
-export class UserManagerPO extends BasePage {
+export interface IUserManagerPage extends BasePage {
+  CreateUser(firstName: string, lastName: string, userEmail: string): Promise<UserManagerPO>;
+  UserSearch(userEmail: string): Promise<UserManagerPO>;
+}
+
+interface UserSearchResponse {
+  value: Array<{
+    email: string;
+  }>;
+}
+
+export class UserManagerPO extends BasePage implements IUserManagerPage {
   private readonly $createUserBtn: Locator;
 
   constructor(page: Page) {
@@ -11,12 +21,12 @@ export class UserManagerPO extends BasePage {
     this.$createUserBtn = this.page.locator('li').filter({ hasText: 'Create User' });
   }
 
-  public async open(page: Page): Promise<IPageObject> {
+  public static async open(page: Page): Promise<UserManagerPO> {
     await page.goto('/admin-hub/user-manager');
-    return new UserManagerPO(page) as unknown as IPageObject;
+    return new UserManagerPO(page);
   }
 
-  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<IPageObject> => {
+  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<UserManagerPO> => {
     await this.$createUserBtn.waitFor({ state: 'attached' });
     await this.$createUserBtn.click();
     await this.page.getByPlaceholder('Search for Customer').click();
@@ -31,25 +41,25 @@ export class UserManagerPO extends BasePage {
     await this.page.getByPlaceholder('Phone').fill('1112223333');
     await this.page.getByRole('button', { name: 'Save' }).click();
     await this.page.getByRole('button', { name: 'Yes, Create' }).click();
-    return this as unknown as IPageObject;
+    return this;
   };
 
-  public UserSearch = async (userEmail: string): Promise<IPageObject> => {
+  public UserSearch = async (userEmail: string): Promise<UserManagerPO> => {
     await this.page.getByRole('button').nth(2).click();
     const [response]: any = await Promise.all([
       this.page.waitForResponse(resp => resp.url().includes('/get-search-all-users?'), { timeout: 30000 }),
       this.page.getByPlaceholder('User Email').click(),
       this.page.getByPlaceholder('User Email').fill(userEmail),
     ]);
-    const jsonResponse: object = await response.json();
-    if (jsonResponse['value'].length === 0) throw new Error(`User: ${userEmail} not found`);
-    const [{ email }] = jsonResponse['value'];
+    const jsonResponse: UserSearchResponse = await response.json();
+    if (jsonResponse.value.length === 0) throw new Error(`User: ${userEmail} not found`);
+    const [{ email }] = jsonResponse.value;
 
     if (email !== userEmail) throw new Error(`User email: ${userEmail} do not match response email: ${email}`);
     await this.page.locator('cdk-virtual-scroll-viewport [tabindex="0"]').click();
-    return this as unknown as IPageObject;
+    return this;
   };
 }
 
-const UserManagerPage = createProxymisedPage(UserManagerPO);
+const UserManagerPage = createProxymisedPage<UserManagerPO>(UserManagerPO);
 export { UserManagerPage };

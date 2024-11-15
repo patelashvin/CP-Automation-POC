@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/await-thenable */
 /**
  * This module is responsible for setting up the global state before all tests start.
  * It includes a default export function that runs before all tests, setting up any necessary global context.

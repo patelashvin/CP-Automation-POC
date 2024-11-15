@@ -1,9 +1,9 @@
 import { Locator, Page } from '@playwright/test';
-import { createProxymisedPage } from '@utils/proxymise.utils';
 import { HomePage } from '@pages/home.page';
-import { BasePage } from '@pages/base/base.page';
+import proxymise from 'proxymise';
 
-class LoginPO extends BasePage {
+class LoginPO {
+  protected readonly page: Page;
   private readonly $loginButton: Locator;
   private readonly $userNameField: Locator;
   private readonly $nextButton: Locator;
@@ -12,7 +12,7 @@ class LoginPO extends BasePage {
   private readonly $nameField: Locator;
 
   constructor(page: Page) {
-    super(page);
+    this.page = page;
     this.$loginButton = this.page.locator('button:has-text("Login")');
     this.$userNameField = this.page.locator('input[name="username"]');
     this.$nextButton = this.page.locator('form [value="Next"]');
@@ -48,5 +48,5 @@ class LoginPO extends BasePage {
   }
 }
 
-const LoginPage = createProxymisedPage(LoginPO);
+const LoginPage = proxymise(LoginPO);
 export { LoginPage };

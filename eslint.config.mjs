@@ -155,6 +155,8 @@ export default [
       '@typescript-eslint/no-unsafe-return': 'off',
       '@typescript-eslint/no-floating-promises': 'error',
       '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+      '@typescript-eslint/no-unsafe-call': 'warn',
+      '@typescript-eslint/await-thenable': 'off'
     },
   },
 ];
