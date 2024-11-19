@@ -2,8 +2,6 @@ import { Page } from '@playwright/test';
 import { createProxymisedPage } from '@utils/proxymise.utils';
 import { BasePage } from '@pages/base/base.page';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface IHomePage extends BasePage {}
 export class HomePO extends BasePage {
   constructor(page: Page) {
     super(page);

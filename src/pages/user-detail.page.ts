@@ -2,10 +2,7 @@ import { Locator, Page } from '@playwright/test';
 import { createProxymisedPage } from '@utils/proxymise.utils';
 import { BasePage } from './base/base.page';
 
-export interface IUserDetailPage extends BasePage {
-  DeleteUser(): Promise<UserDetailPO>;
-}
-export class UserDetailPO extends BasePage implements IUserDetailPage {
+export class UserDetailPO extends BasePage {
   readonly $deleteBtn: Locator;
   readonly $userFirstName: Locator;
   readonly $edit: Locator;
@@ -41,17 +38,16 @@ export class UserDetailPO extends BasePage implements IUserDetailPage {
 
   public static async open(page: Page, customerId: string): Promise<UserDetailPO> {
     await page.goto(`/admin-hub/user-manager/details/${customerId}`);
-    return new UserDetailPO(page);
+    return new UserDetailPage(page);
   }
 
   public DeleteUser = async (): Promise<UserDetailPO> => {
     await this.$deleteBtn.waitFor({ state: 'visible' });
     await this.$deleteBtn.click();
     await this.page.getByRole('button', { name: "Yes, I'm sure" }).click();
-    return this;
+    return new UserDetailPage(this.page);
   };
 }
 
-//provide instance type and the constructor type
 const UserDetailPage = createProxymisedPage<UserDetailPO>(UserDetailPO);
 export { UserDetailPage };

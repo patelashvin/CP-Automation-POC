@@ -1,11 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { BasePage } from '@pages/base/base.page';
 import { createProxymisedPage } from '@utils/proxymise.utils';
-
-export interface IUserManagerPage extends BasePage {
-  CreateUser(firstName: string, lastName: string, userEmail: string): Promise<UserManagerPO>;
-  UserSearch(userEmail: string): Promise<UserManagerPO>;
-}
+import { UserDetailPO, UserDetailPage } from '@pages/user-detail.page';
 
 interface UserSearchResponse {
   value: Array<{
@@ -13,8 +9,8 @@ interface UserSearchResponse {
   }>;
 }
 
-export class UserManagerPO extends BasePage implements IUserManagerPage {
-  private readonly $createUserBtn: Locator;
+export class UserManagerPO extends BasePage {
+  public readonly $createUserBtn: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -26,7 +22,7 @@ export class UserManagerPO extends BasePage implements IUserManagerPage {
     return new UserManagerPO(page);
   }
 
-  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<UserManagerPO> => {
+  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<UserDetailPO> => {
     await this.$createUserBtn.waitFor({ state: 'attached' });
     await this.$createUserBtn.click();
     await this.page.getByPlaceholder('Search for Customer').click();
@@ -41,10 +37,10 @@ export class UserManagerPO extends BasePage implements IUserManagerPage {
     await this.page.getByPlaceholder('Phone').fill('1112223333');
     await this.page.getByRole('button', { name: 'Save' }).click();
     await this.page.getByRole('button', { name: 'Yes, Create' }).click();
-    return this;
+    return new UserDetailPage(this.page);
   };
 
-  public UserSearch = async (userEmail: string): Promise<UserManagerPO> => {
+  public UserSearch = async (userEmail: string): Promise<UserDetailPO> => {
     await this.page.getByRole('button').nth(2).click();
     const [response]: any = await Promise.all([
       this.page.waitForResponse(resp => resp.url().includes('/get-search-all-users?'), { timeout: 30000 }),
@@ -57,7 +53,7 @@ export class UserManagerPO extends BasePage implements IUserManagerPage {
 
     if (email !== userEmail) throw new Error(`User email: ${userEmail} do not match response email: ${email}`);
     await this.page.locator('cdk-virtual-scroll-viewport [tabindex="0"]').click();
-    return this;
+    return new UserDetailPage(this.page);
   };
 }
 

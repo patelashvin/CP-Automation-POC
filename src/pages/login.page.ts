@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { HomePage } from '@pages/home.page';
+import { HomePO, HomePage } from '@pages/home.page';
 import proxymise from 'proxymise';
 
 class LoginPO {
@@ -21,25 +21,25 @@ class LoginPO {
     this.$nameField = this.page.locator('input[name="username"]');
   }
 
-  public static async open(page: Page, url: string | undefined): Promise<LoginPO> {
+  public static async open(page: Page, url?: string): Promise<LoginPO> {
     await page.goto(url as string);
     await page.waitForLoadState('domcontentloaded');
     return new LoginPO(page);
   }
 
-  async ClickLoginBtn(): Promise<this> {
+  async ClickLoginBtn(): Promise<LoginPO> {
     await this.$loginButton.waitFor({ state: 'visible' });
     await this.$loginButton.click();
     return this;
   }
 
-  async EnterUserName(username: string | undefined): Promise<this> {
+  async EnterUserName(username?: string): Promise<LoginPO> {
     await this.$userNameField.fill(username as string);
     await this.$nextButton.click();
     return this;
   }
 
-  async EnterPassword(password: string | undefined): Promise<any> {
+  async EnterPassword(password?: string): Promise<HomePO> {
     await this.$passwordField.fill(password as string);
     await this.$submitButton.click();
     await this.page.waitForLoadState('domcontentloaded');
