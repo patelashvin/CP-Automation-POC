@@ -57,5 +57,5 @@ export class UserManagerPO extends BasePage {
   };
 }
 
-const UserManagerPage = createProxymisedPage<UserManagerPO>(UserManagerPO);
+const UserManagerPage = createProxymisedPage(UserManagerPO);
 export { UserManagerPage };

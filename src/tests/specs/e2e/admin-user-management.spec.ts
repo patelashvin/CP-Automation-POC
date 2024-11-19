@@ -14,6 +14,9 @@ test.beforeEach(() => {
 });
 
 test('Create User and Delete User', async ({ page }) => {
-  await HomePage.open(page).ClickAdminHubBtn().SwitchCustomer(' Park Place Technologies LLC ').CreateUser('', '', '').Locators.;
+  await HomePage.open(page)
+    .ClickAdminHubBtn()
+    .SwitchCustomer(' Park Place Technologies LLC ')
+    .Locators.$createUserBtn.isVisible();
   expect(true).toBeTruthy();
 });

@@ -49,5 +49,5 @@ export class UserDetailPO extends BasePage {
   };
 }
 
-const UserDetailPage = createProxymisedPage<UserDetailPO>(UserDetailPO);
+const UserDetailPage = createProxymisedPage(UserDetailPO);
 export { UserDetailPage };

@@ -14,5 +14,5 @@ export class HomePO extends BasePage {
   }
 }
 
-const HomePage = createProxymisedPage<HomePO>(HomePO);
+const HomePage = createProxymisedPage(HomePO);
 export { HomePage };

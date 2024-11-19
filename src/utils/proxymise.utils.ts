@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import proxymise from 'proxymise';
 import { BasePage } from '@pages/base/base.page';
+import { Page } from 'playwright';
 
 function extractLocators<T extends BasePage>(instance: T) {
   return Object.entries(instance).reduce(
@@ -32,21 +33,17 @@ function createProxyHandler() {
       if (prop === 'Locators') {
         return target.Locators;
       }
-
       if (typeof target[prop] === 'function') {
         return target[prop];
       }
-
       if (target.Locators && prop in target.Locators) {
         return target.Locators[prop];
       }
       return undefined;
     },
-
     ownKeys(target: any) {
       return [...Object.keys(target).filter(key => typeof target[key] === 'function'), 'Locators'];
     },
-
     has(target: any, prop: string) {
       return prop === 'Locators' || typeof target[prop] === 'function' || (target.Locators && prop in target.Locators);
     },
@@ -54,20 +51,18 @@ function createProxyHandler() {
 }
 
 export function createProxymisedPage<T extends BasePage>(
-  PageClass: new (...args: any[]) => T,
-): ProxymisedPage<T, typeof PageClass> {
+  PageClass: new (page: Page, ...args: any[]) => T,
+): PageObjectClass<T> {
   const proxiedClass = proxymise(PageClass) as any;
 
   return new Proxy(proxiedClass, {
     construct(target, args) {
       const instance = new target(...args);
-
       const cleanInstance = {
         ...extractMethods(instance),
         Locators: extractLocators(instance),
       };
-
       return new Proxy(cleanInstance, createProxyHandler());
     },
-  }) as ProxymisedPage<T, typeof PageClass>;
+  }) as PageObjectClass<T>;
 }
