@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@playwright/test';
 import type { BasePage } from '@pages/base/base.page';
-
+declare module 'underscor';
 declare global {
   type ChainableInstance<T> = {
     [P in keyof T]: T[P] extends (...args: infer A) => Promise<infer R>

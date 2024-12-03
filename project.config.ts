@@ -34,7 +34,7 @@ export const project = [
         /* --auto-open-devtools-for-tabs option is used to open a test with Network tab for debugging. It can help in analyzing network requests and responses.*/
         // args: ["--auto-open-devtools-for-tabs"],
         // channel: 'chrome',
-        slowMo: 0,
+        slowMo: process.env.DEBUG === 'true' ? 900 : 0, //900 - to slowdown execution
         headless: false,
       },
     },
@@ -46,7 +46,7 @@ export const project = [
     use: {
       ...devices['Desktop Chrome'],
       viewport: { width: 1600, height: 1000 },
-      // storageState: STORAGE_STATE_PATH,
+      storageState: STORAGE_STATE_LOGIN,
       launchOptions: {
         args: ['--disable-web-security'],
         // channel: 'chrome',
