@@ -1,7 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { BasePage } from '@pages/base/base.page';
 import { createProxymisedPage } from '@utils/proxymise.utils';
-import { IUserDetailPage, UserDetailPO } from '@pages/user-detail.page';
+import { UserDetailPO } from '@pages/user-detail.page';
 
 export interface IUserManagerPage extends BasePage {
   CreateUser(firstName: string, lastName: string, userEmail: string): Promise<UserDetailPO>;
@@ -15,7 +15,7 @@ interface UserSearchResponse {
 }
 
 export class UserManagerPO extends BasePage implements IUserManagerPage {
-  private readonly $createUserBtn: Locator;
+  public readonly $createUserBtn: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -27,7 +27,7 @@ export class UserManagerPO extends BasePage implements IUserManagerPage {
     return new UserManagerPO(page);
   }
 
-  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<IUserDetailPage> => {
+  public CreateUser = async (firstName: string, lastName: string, userEmail: string): Promise<UserDetailPO> => {
     await this.$createUserBtn.waitFor({ state: 'attached' });
     await this.$createUserBtn.click();
     await this.page.getByPlaceholder('Search for Customer').click();
@@ -44,7 +44,7 @@ export class UserManagerPO extends BasePage implements IUserManagerPage {
     return new UserDetailPO(this.page);
   };
 
-  public UserSearch = async (userEmail: string): Promise<IUserDetailPage> => {
+  public UserSearch = async (userEmail: string): Promise<UserDetailPO> => {
     await this.page.getByRole('button').nth(2).click();
     const [response]: any = await Promise.all([
       this.page.waitForResponse(resp => resp.url().includes('/get-search-all-users?'), { timeout: 30000 }),

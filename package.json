@@ -52,6 +52,7 @@
     "eslint-plugin-jsdoc": "^50.4.3",
     "eslint-plugin-prettier": "5.2.1",
     "playwright": "^1.48.2",
+    "playwright-table": "^1.1.0",
     "playwright-tesults-reporter": "^1.1.0",
     "prettier": "3.3.3",
     "proxymise": "^1.0.2",
