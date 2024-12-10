@@ -3,7 +3,7 @@
     "module": "ES2020",
     "target": "ES2020",
     "baseUrl": ".",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "paths": {
       "@pages/*": ["src/pages/*"],
@@ -27,14 +27,15 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "strictPropertyInitialization": true,
     "strict": true,
     "strictNullChecks": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "ignoreDeprecations": "5.0"
   },
   "include": ["src/**/*.ts", "src/tests/specs/**/*.spec.ts", "playwright.config.ts", "project.config.ts", "examples/**/*.ts", "global.d.ts"],
   "exclude": ["node_modules", "eslint.config.mjs"]

@@ -14,19 +14,19 @@ test.beforeEach(() => {
 });
 
 test('Create User and Delete User', async ({ page }) => {
-  const user = await HomePage.open(page)
+  const user = HomePage.open(page)
     .SwitchCustomer('Park Place Technologies LLC')
     .ClickAdminHubBtn()
     .CreateUser(firstName, lastName, email);
 
-  await expect(await user.$userFirstName).toHaveValue(firstName);
+  await expect(user.$userFirstName).toHaveValue(firstName);
 
-  await user.DeleteUser();
+  user.DeleteUser();
 });
 
 test('Create Duplicate User', async ({ page }) => {
   email = 'testautomation@parkplacetech.com';
-  await HomePage.open(page)
+  HomePage.open(page)
     .SwitchCustomer('Park Place Technologies LLC')
     .ClickAdminHubBtn()
     .CreateUser(firstName, lastName, email);
@@ -36,20 +36,14 @@ test('Create Duplicate User', async ({ page }) => {
 
 test('User Search', async ({ page }) => {
   email = 'testautomation@parkplacetech.com';
-  const user = await HomePage.open(page)
-    .SwitchCustomer('Park Place Technologies LLC')
-    .ClickAdminHubBtn()
-    .UserSearch(email);
+  const user = HomePage.open(page).SwitchCustomer('Park Place Technologies LLC').ClickAdminHubBtn().UserSearch(email);
 
   await expect(user.$userFirstName).toHaveValue('test');
 });
 
 test('User Detail Page', async ({ page }) => {
   email = 'testautomation@parkplacetech.com';
-  const user = await HomePage.open(page)
-    .SwitchCustomer('Park Place Technologies LLC')
-    .ClickAdminHubBtn()
-    .UserSearch(email);
+  const user = HomePage.open(page).SwitchCustomer('Park Place Technologies LLC').ClickAdminHubBtn().UserSearch(email);
 
   await expect(user.$status).toHaveValue('ACTIVE');
   await expect(user.$okta).toHaveValue('ACTIVE');

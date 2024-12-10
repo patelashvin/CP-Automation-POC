@@ -80,14 +80,6 @@ export default [
       'import/resolver': {
         typescript: {
           project: path.join(__dirname, './tsconfig.json'),
-          paths: {
-            "@pages/*": ["src/pages/*"],
-            "@testdata/*": ["src/tests/data/*"],
-            "@fixture": ["src/tests/setup/fixture"],
-            "@utils/*": ["./src/utils/*"],
-            "@playwright-config": ["playwright.config"],
-            "@proxymise-page": ["src/utils/proxymise.utils.ts"],
-          },
           alwaysTryTypes: true,
         },
       },

@@ -2,7 +2,9 @@
   "name": "central-park-client-ts-playwright",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  "engines": {
+    "node": ">=18.18"
+  },
   "scripts": {
     "clean": "npm run format && npm run lint-fix",
     "check-format": "npx prettier --check ./src",

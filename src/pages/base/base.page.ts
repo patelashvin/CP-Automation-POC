@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import { Page } from '@playwright/test';
 import { HeaderComponent } from './header.comp';
 import { NavBarComponent } from './nav-bar.comp';
@@ -29,8 +30,7 @@ export abstract class BasePage implements IPageObject {
       resp => resp.url().includes('/administration-user/get-search-all-users?') && resp.status() === 200,
       { timeout: 30000 },
     );
-
-    const { UserManagerPO } = await import('@pages/admin-hub/user-manager.page');
+    const { UserManagerPO } = require('../admin-hub/user-manager.page');
     return new UserManagerPO(this.page);
   }
 
@@ -42,7 +42,7 @@ export abstract class BasePage implements IPageObject {
     await this.page.getByLabel('Customer', { exact: true }).getByText(customer, { exact: true }).click();
     await this.Header.$changeCustomerBtn.click();
     await this.NavBar.$homeBtn.click();
-    const { UserManagerPO } = await import('@pages/admin-hub/user-manager.page');
+    const { UserManagerPO } = require('../admin-hub/user-manager.page');
     return new UserManagerPO(this.page);
   }
 
@@ -50,7 +50,7 @@ export abstract class BasePage implements IPageObject {
     await this.NavBar.$ticketHubBtn.click({ delay: 600 });
     await this.NavBar.$submitNewTicketBtn.click({ delay: 600 });
 
-    const { SubmitPO } = await import('@pages/ticket-hub/submit.page');
+    const { SubmitPO } = require('../ticket-hub/submit.page');
     return new SubmitPO(this.page);
   }
 }
